@@ -17,7 +17,6 @@ export interface Product {
 export type CreateProductDTO = Omit<Product, 'id' | 'rating'>;
 
 export type UpdateProductPayload = Partial<CreateProductDTO>;
-gỉ
 export interface StateIdle {
   status: 'idle';
 }
