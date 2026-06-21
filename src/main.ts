@@ -1,60 +1,40 @@
-import './style.css'
-import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.ts'
+import { getProducts, getCategories } from './api';
+import { setState } from './state';
+import { render } from './ui';
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src="${viteLogo}" class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+/**
+ * FEATURE 1 & 4 — Hàm khởi tạo ứng dụng bất đồng bộ
+ * Sử dụng Promise.all để tải song song dữ liệu từ API và kích nổ giao diện
+ */
+async function initApp(): Promise<void> {
+  // 1. Chuyển trạng thái sang 'loading' để màn hình hiển thị chữ "Đang tải..."
+  setState({ status: 'loading' }, render);
 
-<div class="ticks"></div>
+  try {
+    // 2. FEATURE 4: Chạy song song 2 luồng fetch dữ liệu cùng lúc cho nhanh
+    const [productsData, categoriesData] = await Promise.all([
+      getProducts(),
+      getCategories()
+    ]);
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src="${viteLogo}" alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+    // 3. Tải thành công -> Đổ dữ liệu vào state và ra lệnh cho ui.ts vẽ giao diện
+    setState({
+      status: 'success',
+      products: productsData,
+      filteredProducts: productsData, // Ban đầu danh sách hiển thị trùng với danh sách gốc
+      categories: categoriesData,
+      selectedProduct: null
+    }, render);
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+  } catch (error) {
+    // 4. Nếu mất mạng hoặc lỗi API -> Chuyển sang trạng thái lỗi
+    const errorMessage = error instanceof Error ? error.message : 'Đã có lỗi xảy ra từ máy chủ.';
+    setState({
+      status: 'error',
+      message: errorMessage
+    }, render);
+  }
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+// Chạy hàm khởi tạo ngay khi trình duyệt đọc file main.ts
+initApp();
