@@ -7,27 +7,29 @@
 ---
 
 ## 📸 Ảnh chụp màn hình giao diện (Screenshots)
-
-![Giao diện tổng quan DevDash](assets/dashboard.png)
 ### Giao diện tổng quan DevDash
-![Giao diện sắp xếp theo danh mục](assets/danh_muc.png)
+![Giao diện tổng quan DevDash](assets/dashboard.png)
+
 ### Giao diện sắp xếp sản phẩm theo danh mục
-![Giao diện sắp xếp theo giá sản phẩm](assets/gia.png)
+![Giao diện sắp xếp theo danh mục](assets/danh_muc.png)
+
 ### Giao diện sắp xếp sản phẩm theo giá
-![Giao diện tìm kiếm sản phẩm](assets/tim_kiem.png)
+![Giao diện sắp xếp theo giá sản phẩm](assets/gia.png)
+
 ### Giao diện tìm kiếm sản phẩm
+![Giao diện tìm kiếm sản phẩm](assets/tim_kiem.png)
 
 ---
 
 ## 🛠️ Hướng dẫn cài đặt và Khởi chạy cục bộ (Local Run & Build Instructions)
 
 ### 1. Tải các thư viện phụ thuộc (Dependencies)
-Mở terminal tại thư mục gốc của dự án (`ajt-devdash`) và chạy lệnh: npm install
+Mở terminal tại thư mục gốc của dự án (`ajt-devdash`) và chạy lệnh: `npm install`
 ### 2. Khởi chạy chế độ phát triển (Local Run/Development)
-Chạy lệnh: npm run dev
+Chạy lệnh: `npm run dev`
 Sau khi chạy xong, nhấn giữ Ctl và click vào đường dẫn hiển thị trên terminal
 ### 3. Biên dịch dự án sang Production
-Chạy lệnh: npm run build
+Chạy lệnh: `npm run build`
 
 ---
 
