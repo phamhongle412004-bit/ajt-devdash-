@@ -18,7 +18,7 @@ async function initApp(): Promise<void> {
     setState({
       status: 'success',
       products: productsData,
-      filteredProducts: productsData, // Ban đầu danh sách hiển thị trùng với danh sách gốc
+      filteredProducts: productsData, 
       categories: categoriesData,
       selectedProduct: null
     }, render);
