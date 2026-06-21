@@ -1,3 +1,4 @@
+//Day 1
 export interface Rating {
   rate: number;
   count: number;
