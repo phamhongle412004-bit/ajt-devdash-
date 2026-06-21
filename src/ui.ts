@@ -36,7 +36,7 @@ export function render(): void {
       // Giao diện Dashboard chính khi dữ liệu đã tải về thành công
       appDiv.innerHTML = `
         <header>
-          <h1>🚀 DevDash — Dashboard Quản Lý Sản Phẩm</h1>
+          <h1> DevDash — Dashboard Quản Lý Sản Phẩm</h1>
         </header>
 
         <section class="filter-bar">
@@ -92,16 +92,21 @@ function setupEventListeners(): void {
     const selectedCategory = categoryFilter?.value || 'all';
     const selectedSort = priceSort?.value || 'default';
 
-    // Xử lý dữ liệu mảng
+    // Gọi hàm HOF từ state.ts để xử lý dữ liệu mảng
     filterAndSearchProducts(searchTerm, selectedCategory, selectedSort);
+    
+    // Chỉ render lại danh sách sản phẩm để giữ nguyên focus con trỏ chuột ở ô input
     renderProductListOnly();
   };
+
+  // Áp dụng DEBOUNCE: Bọc hàm triggerFilter lại, chỉ cho chạy sau khi ngừng gõ 300ms
   const debouncedSearch = debounce(triggerFilter, 300);
 
   searchInput?.addEventListener('input', debouncedSearch);
   categoryFilter?.addEventListener('change', triggerFilter);
   priceSort?.addEventListener('change', triggerFilter);
 
+  // Sự kiện Click xem chi tiết sản phẩm sản phẩm (Event Delegation)
   const grid = document.querySelector('.products-grid');
   grid?.addEventListener('click', (e) => {
     const card = (e.target as HTMLElement).closest('.product-card');

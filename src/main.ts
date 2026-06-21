@@ -2,10 +2,7 @@ import { getProducts, getCategories } from './api';
 import { setState } from './state';
 import { render } from './ui';
 
-/**
- * FEATURE 1 & 4 — Hàm khởi tạo ứng dụng bất đồng bộ
- * Sử dụng Promise.all để tải song song dữ liệu từ API và kích nổ giao diện
- */
+
 async function initApp(): Promise<void> {
   // 1. Chuyển trạng thái sang 'loading' để màn hình hiển thị chữ "Đang tải..."
   setState({ status: 'loading' }, render);
